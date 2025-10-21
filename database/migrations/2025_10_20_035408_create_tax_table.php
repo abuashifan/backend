@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tax', function (Blueprint $table) {
             $table->id();
-            $t->string('nama', 100);
-            $t->decimal('rate', 6, 2);
-            $t->boolean('inklusif')->default(false);
+            $table->string('nama', 100);
+            $table->decimal('rate', 6, 2);
+            $table->boolean('inklusif')->default(false);
             $table->timestamps();
         });
     }

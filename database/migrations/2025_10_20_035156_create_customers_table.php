@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('npwp',50)->nullable();
             $table->text('catatan')->nullable();
             $table->timestamps();
-            $t->softDeletes();
+            $table->softDeletes();
             $table->index('name','idx_customer_name');
         });
     }

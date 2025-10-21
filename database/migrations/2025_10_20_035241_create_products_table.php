@@ -21,15 +21,15 @@ return new class extends Migration
             ->constrained('product_unit')->restrictOnDelete();
             $table->string('SKU',100)->nullable();
             $table->string('barcode',100)->nullable();
-            $t->decimal('harga_beli_default', 18, 2)->nullable();
-            $t->decimal('harga_jual_default', 18, 2)->nullable();
-            $t->decimal('min_stok', 18, 4)->default(0);
-            $t->boolean('aktif')->default(true);
+            $table->decimal('harga_beli_default', 18, 2)->nullable();
+            $table->decimal('harga_jual_default', 18, 2)->nullable();
+            $table->decimal('min_stok', 18, 4)->default(0);
+            $table->boolean('aktif')->default(true);
             $table->timestamps();
-            $t->softDeletes();
+            $table->softDeletes();
 
-            $t->index('name', 'idx_product_name');
-            $t->index('kategori_id', 'idx_barang_kategori');
+            $table->index('name', 'idx_product_name');
+            $table->index('kategori_id', 'idx_barang_kategori');
         });
     }
 
