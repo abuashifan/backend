@@ -11,9 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chart_of_account', function (Blueprint $table) {
+       Schema::create('chart_of_accounts', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 30)->unique();
+            $table->string('name', 150);
+
+            // asset, liability, equity, revenue, expense, other
+            $table->string('type', 20)->index();
+            // normal balance side: debit/credit
+            $table->string('normal_balance', 10)->default('debit');
+
+            // hierarchical
+            $table->foreignId('parent_id')->nullable()->constrained('chart_of_accounts')->nullOnDelete();
+            $table->unsignedSmallInteger('level')->default(1);
+            $table->boolean('is_active')->default(true);
+
+            $table->text('note')->nullable();
+
             $table->timestamps();
+
+            $table->index(['type', 'code'], 'idx_coa_type_code');
         });
     }
 
