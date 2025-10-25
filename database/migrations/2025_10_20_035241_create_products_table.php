@@ -29,7 +29,8 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->index('name', 'idx_product_name');
-            $table->index('kategori_id', 'idx_barang_kategori');
+            $table->index('category_id', 'idx_product_category');
+
         });
     }
 

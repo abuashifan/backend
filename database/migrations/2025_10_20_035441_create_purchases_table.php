@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('warehouse_id')->constrained('warehouses')->restrictOnDelete();
             $table->decimal('subtotal', 18, 2)->default(0);
             $table->decimal('discount', 18, 2)->default(0);
-            $table->foreignId('tax_id')->nullable()->constrained('tax')->restrictOnDelete();
+            $table->foreignId('tax_id')->nullable()->constrained('taxes')->restrictOnDelete();
             $table->decimal('tax_nominal', 18, 2)->default(0);
             $table->decimal('other_cost', 18, 2)->default(0);
             $table->decimal('total', 18, 2)->default(0);
@@ -60,7 +60,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchases');
+        
         Schema::dropIfExists('purchase_items');
+        Schema::dropIfExists('purchases');
     }
 };
