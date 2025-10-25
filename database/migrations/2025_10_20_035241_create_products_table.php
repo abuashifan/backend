@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name',150);
             $table->text('alamat')->nullable();
-            $table->foregnId('categoryID')->nullable()
+            $table->foreignId('categoryID')->nullable()
             ->constrained('product_categories')->restrictOnDelete();
-             $table->foregnId('unitID')->nullable()
+             $table->foreignId('unitID')->nullable()
             ->constrained('product_unit')->restrictOnDelete();
             $table->string('SKU',100)->nullable();
             $table->string('barcode',100)->nullable();
