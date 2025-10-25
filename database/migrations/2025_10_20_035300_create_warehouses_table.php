@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tax', function (Blueprint $table) {
+        Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 100);
-            $table->decimal('rate', 6, 2);
-            $table->boolean('inklusif')->default(false);
+            $table->string('name',150);
+            $table->text('alamat');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tax');
+        Schema::dropIfExists('wherehouses');
     }
 };

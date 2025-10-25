@@ -45,7 +45,7 @@ return new class extends Migration
             $table->foreignId('unit_id')->nullable()->constrained('product_unit')->restrictOnDelete();
             $table->decimal('price', 18, 2);
             $table->decimal('discount', 18, 2)->default(0);
-            $table->foreignId('tax_id')->nullable()->constrained('tax')->restrictOnDelete();
+            $table->foreignId('tax_id')->nullable()->constrained('taxes')->restrictOnDelete();
             $table->decimal('tax_nominal', 18, 2)->default(0);
             $table->decimal('subtotal', 18, 2);
             $table->timestamps();

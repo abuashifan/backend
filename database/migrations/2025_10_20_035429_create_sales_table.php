@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('salles', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number', 50)->unique();
             $table->dateTime('date');
             $table->foreignId('customer_id')->constrained('customers')->restrictOnDelete();
-            $table->foreignId('warehouse_id')->constrained('wherehouses')->restrictOnDelete();
+            $table->foreignId('warehouse_id')->constrained('warehouses')->restrictOnDelete();
             $table->decimal('subtotal', 18, 2)->default(0);
             $table->decimal('discount', 18, 2)->default(0);
-            $table->foreignId('tax_id')->nullable()->constrained('tax')->restrictOnDelete();
+            $table->foreignId('tax_id')->nullable()->constrained('taxes')->restrictOnDelete();
             $table->decimal('tax_nominal', 18, 2)->default(0);
             $table->decimal('other_cost', 18, 2)->default(0);
             $table->decimal('total', 18, 2)->default(0);
@@ -35,14 +35,14 @@ return new class extends Migration
 
         Schema::create('salles_item', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('salles_id')->constrained('salles')->cascadeOnDelete();
+            $table->foreignId('salles_id')->constrained('sales')->cascadeOnDelete();
             $table->foreignId('products_id')->constrained('products')->restrictOnDelete();
             $table->text('description')->nullable();
             $table->decimal('qty', 18, 4);
             $table->foreignId('unit_id')->nullable()->constrained('product_unit')->restrictOnDelete();
             $table->decimal('price', 18, 2);
             $table->decimal('discount', 18, 2)->default(0);
-            $table->foreignId('tax_id')->nullable()->constrained('tax')->restrictOnDelete();
+            $table->foreignId('tax_id')->nullable()->constrained('taxes')->restrictOnDelete();
             $table->decimal('tax_nominal', 18, 2)->default(0);
             $table->decimal('subtotal', 18, 2);
             $table->timestamps();
