@@ -39,7 +39,7 @@ return new class extends Migration
             $table->foreignId('products_id')->constrained('products')->restrictOnDelete();
             $table->text('description')->nullable();
             $table->decimal('qty', 18, 4);
-            $table->foreignId('unit_id')->nullable()->constrained('product_unit')->restrictOnDelete();
+            $table->foreignId('unit_id')->nullable()->constrained('product_units')->restrictOnDelete();
             $table->decimal('price', 18, 2);
             $table->decimal('discount', 18, 2)->default(0);
             $table->foreignId('tax_id')->nullable()->constrained('taxes')->restrictOnDelete();

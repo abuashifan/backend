@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name',150);
             $table->text('description')->nullable();
-            $table->foreignId('categoryID')->nullable()
-            ->constrained('product_categories')->restrictOnDelete();
-             $table->foreignId('unitID')->nullable()
-            ->constrained('product_unit')->restrictOnDelete();
+            $table->foreignId('category_id')->nullable()
+                ->constrained('product_categories')->restrictOnDelete();
+            $table->foreignId('unit_id')->nullable()
+                ->constrained('product_units')->restrictOnDelete();
             $table->string('SKU',100)->nullable();
             $table->string('barcode',100)->nullable();
             $table->decimal('harga_beli_default', 18, 2)->nullable();

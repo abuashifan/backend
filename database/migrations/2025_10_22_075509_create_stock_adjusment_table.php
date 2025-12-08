@@ -35,7 +35,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('line_number')->default(1);
 
             $table->foreignId('product_id')->constrained('products')->restrictOnDelete();
-            $table->foreignId('unit_id')->nullable()->constrained('product_unit')->restrictOnDelete();
+            $table->foreignId('unit_id')->nullable()->constrained('product_units')->restrictOnDelete();
 
             $table->decimal('qty_in', 18, 4)->default(0);
             $table->decimal('qty_out', 18, 4)->default(0);

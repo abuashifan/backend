@@ -36,8 +36,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('line_number')->default(1);
 
             $table->foreignId('product_id')->constrained('products')->restrictOnDelete();
-            $table->foreignId('unit_id')->nullable()->constrained('product_unit')->restrictOnDelete();
-
+            $table->foreignId('unit_id')->nullable()->constrained('product_units')->restrictOnDelete();
             $table->decimal('qty', 18, 4);
 
             // snapshot biaya; pada banyak sistem transfer tidak mengubah nilai, ini hanya untuk jejak

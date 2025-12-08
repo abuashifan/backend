@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->foreignId('product_id')->constrained('products')->restrictOnDelete();
             $table->foreignId('warehouse_id')->constrained('warehouses')->restrictOnDelete();
-            $table->foreignId('unit_id')->nullable()->constrained('product_unit')->restrictOnDelete();
+            $table->foreignId('unit_id')->nullable()->constrained('product_units')->restrictOnDelete();
 
             // Sumber dokumen / referensi
             $table->string('reference_type', 30)->index(); // purchase, purchase_return, sale, sales_return, transfer_in, transfer_out, adjustment_in, adjustment_out, opening_balance, production_in, production_out
@@ -78,7 +78,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-       
+
         Schema::dropIfExists('stock_balances');
         Schema::dropIfExists('stock_cards');
     }
