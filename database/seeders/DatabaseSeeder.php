@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             ChartOfAccountsSeeder::class,
             CustomersSeeder::class,
             ProductsSeeder::class,
+            StockSeeder::class,
             TransactionsSeeder::class,
             OtherDataSeeder::class,
         ]);
