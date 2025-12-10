@@ -18,6 +18,8 @@ class SaleApiTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected bool $seed = true;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -27,10 +29,10 @@ class SaleApiTest extends TestCase
 
     public function test_can_create_sale(): void
     {
-        $customer = Customer::factory()->create();
-        $product = Product::factory()->create();
-        $warehouse = Warehouse::factory()->create();
-        $tax = Tax::factory()->create();
+        $customer = Customer::first();
+        $product = Product::first();
+        $warehouse = Warehouse::where('name', 'Main Warehouse')->first() ?? Warehouse::first();
+        $tax = Tax::first();
 
         $payload = [
             'customer_id' => $customer->id,
