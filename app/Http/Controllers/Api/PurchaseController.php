@@ -16,7 +16,7 @@ class PurchaseController extends Controller
     {
     }
 
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         $purchases = Purchase::with(['supplier', 'warehouse', 'tax', 'accountPayable'])->paginate();
 
@@ -31,14 +31,14 @@ class PurchaseController extends Controller
         ], 'Purchases retrieved.');
     }
 
-    public function store(StorePurchaseRequest $request)
+    public function store(StorePurchaseRequest $request): \Illuminate\Http\JsonResponse
     {
         $purchase = $this->purchaseService->createPurchase($request->validated());
 
         return $this->successResponse(new PurchaseResource($purchase), 'Purchase created.', Response::HTTP_CREATED);
     }
 
-    public function show(Purchase $purchase)
+    public function show(Purchase $purchase): \Illuminate\Http\JsonResponse
     {
         return $this->successResponse(
             new PurchaseResource($purchase->loadMissing(['supplier', 'warehouse', 'tax', 'accountPayable'])),
@@ -46,7 +46,7 @@ class PurchaseController extends Controller
         );
     }
 
-    public function update(UpdatePurchaseRequest $request, Purchase $purchase)
+    public function update(UpdatePurchaseRequest $request, Purchase $purchase): \Illuminate\Http\JsonResponse
     {
         $purchase->update($request->validated());
 

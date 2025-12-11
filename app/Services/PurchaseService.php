@@ -10,6 +10,7 @@ use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\Tax;
 use App\Models\Warehouse;
+use App\Services\Calculators\PurchaseCalculator;
 use Carbon\Carbon;
 use DomainException;
 use Illuminate\Support\Facades\DB;
@@ -17,11 +18,26 @@ use Illuminate\Support\Facades\DB;
 class PurchaseService
 {
     public function __construct(
-        private readonly InventoryService $inventoryService,
+        private readonly StockService $stockService,
         private readonly JournalService $journalService,
+        private readonly PurchaseCalculator $calculator
     ) {
     }
 
+    /**
+     * Create a purchase transaction.
+     *
+     * This will:
+     * - validate supplier/product/warehouse existence
+     * - compute subtotal, tax and totals
+     * - persist Purchase and AccountPayable
+     * - update inventory and journal entries
+     *
+     * @param  array  $data
+     * @return Purchase
+     *
+     * @throws \DomainException when supplier/product/warehouse are invalid
+     */
     public function createPurchase(array $data): Purchase
     {
         return DB::transaction(function () use ($data) {
@@ -46,10 +62,10 @@ class PurchaseService
             $unitPrice = (float) ($data['unit_price'] ?? 0);
             $discountAmount = (float) ($data['discount_amount'] ?? 0);
 
-            $subtotal = $quantity * $unitPrice;
-            $taxBase = $subtotal - $discountAmount;
-            $taxAmount = $tax ? ($taxBase * ((float) $tax->rate / 100)) : 0;
-            $totalAmount = $subtotal - $discountAmount + $taxAmount;
+            $computed = $this->calculator->compute($quantity, $unitPrice, $discountAmount, $tax?->id);
+            $subtotal = $computed['subtotal'];
+            $taxAmount = $computed['tax_amount'];
+            $totalAmount = $computed['total_amount'];
 
             $purchase = Purchase::create([
                 'supplier_id' => $supplier->id,
@@ -76,7 +92,7 @@ class PurchaseService
                 'status' => 'open',
             ]);
 
-            $this->inventoryService->increaseStock(
+            $this->stockService->increaseStock(
                 $product->id,
                 $warehouse->id,
                 $quantity,

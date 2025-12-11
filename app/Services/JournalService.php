@@ -19,11 +19,31 @@ use InvalidArgumentException;
 
 class JournalService
 {
+    /**
+     * Retrieve a ChartOfAccount by its code.
+     *
+     * @param  string  $code
+     * @return ChartOfAccount
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     private function getAccountByCode(string $code): ChartOfAccount
     {
         return ChartOfAccount::where('code', $code)->firstOrFail();
     }
 
+    /**
+     * Create a journal entry row ensuring accounting integrity.
+     *
+     * @param  int  $chartOfAccountId
+     * @param  \Carbon\CarbonInterface  $date
+     * @param  string  $description
+     * @param  float  $debit
+     * @param  float  $credit
+     * @param  string|null  $referenceType
+     * @param  int|null  $referenceId
+     * @return JournalEntry
+     */
     private function createEntry(
         int $chartOfAccountId,
         CarbonInterface $date,

@@ -14,6 +14,7 @@ use App\Models\Warehouse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+use App\Models\ChartOfAccount;
 
 class SaleApiTest extends TestCase
 {
@@ -26,6 +27,12 @@ class SaleApiTest extends TestCase
         parent::setUp();
 
         Sanctum::actingAs(User::factory()->create());
+        // Ensure chart of accounts used by sales journal exist
+        ChartOfAccount::firstOrCreate(['code' => '1130'], ['name' => 'Accounts Receivable', 'type' => 'asset', 'is_active' => true]);
+        ChartOfAccount::firstOrCreate(['code' => '4110'], ['name' => 'Sales Revenue', 'type' => 'revenue', 'is_active' => true]);
+        ChartOfAccount::firstOrCreate(['code' => '5110'], ['name' => 'COGS', 'type' => 'expense', 'is_active' => true]);
+        ChartOfAccount::firstOrCreate(['code' => '1141'], ['name' => 'Inventory', 'type' => 'asset', 'is_active' => true]);
+        ChartOfAccount::firstOrCreate(['code' => '2110'], ['name' => 'Accounts Payable', 'type' => 'liability', 'is_active' => true]);
     }
 
     public function test_can_create_sale(): void

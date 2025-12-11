@@ -13,6 +13,7 @@ use App\Models\Warehouse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+use App\Models\ChartOfAccount;
 
 class PurchaseApiTest extends TestCase
 {
@@ -25,6 +26,9 @@ class PurchaseApiTest extends TestCase
         parent::setUp();
 
         Sanctum::actingAs(User::factory()->create());
+        // Ensure required chart of accounts exist for journal postings
+        ChartOfAccount::firstOrCreate(['code' => '1141'], ['name' => 'Inventory', 'type' => 'asset', 'is_active' => true]);
+        ChartOfAccount::firstOrCreate(['code' => '2110'], ['name' => 'Accounts Payable', 'type' => 'liability', 'is_active' => true]);
     }
 
     public function test_can_create_purchase(): void
