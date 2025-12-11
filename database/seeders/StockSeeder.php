@@ -29,9 +29,5 @@ class StockSeeder extends Seeder
             0,
             'Seeded starting inventory'
         );
-
-        // Ensure related records are available for tests relying on seeded data
-        $customer->tax_id = $tax->id;
-        $customer->save();
     }
 }
