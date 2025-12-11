@@ -6,6 +6,7 @@ use App\Models\AccountReceivable;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Supplier;
 use App\Models\StockCard;
 use App\Models\Tax;
 use App\Models\User;
@@ -34,6 +35,22 @@ class SaleApiTest extends TestCase
         $warehouse = Warehouse::where('name', 'Main Warehouse')->first()
             ?? Warehouse::factory()->create();
         $tax = Tax::first() ?? Tax::factory()->create();
+        $supplier = Supplier::first() ?? Supplier::factory()->create();
+
+        $purchasePayload = [
+            'supplier_id' => $supplier->id,
+            'warehouse_id' => $warehouse->id,
+            'product_id' => $product->id,
+            'tax_id' => $tax->id,
+            'invoice_number' => 'PUR-STOCK-'.now()->timestamp,
+            'invoice_date' => now()->toDateString(),
+            'due_date' => now()->addDays(7)->toDateString(),
+            'quantity' => 10,
+            'unit_price' => 500,
+            'discount_amount' => 0,
+        ];
+
+        $this->postJson('/api/purchases', $purchasePayload)->assertCreated();
 
         $payload = [
             'customer_id' => $customer->id,
