@@ -1,0 +1,181 @@
+openapi: 3.0.3
+info:
+  title: Accounting API
+  version: '1.0'
+  description: API spec for Accounting/ERP backend (Laravel)
+servers:
+  - url: http://localhost
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Bearer
+  schemas:
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        exception:
+          type: string
+    PurchaseInput:
+      type: object
+      required: [supplier_id, warehouse_id, product_id, invoice_number, invoice_date, quantity, unit_price]
+      properties:
+        supplier_id:
+          type: integer
+        warehouse_id:
+          type: integer
+        product_id:
+          type: integer
+        tax_id:
+          type: integer
+        invoice_number:
+          type: string
+        invoice_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        quantity:
+          type: number
+        unit_price:
+          type: number
+        discount_amount:
+          type: number
+    SaleInput:
+      type: object
+      required: [customer_id, warehouse_id, product_id, invoice_number, invoice_date, quantity, unit_price]
+      properties: {}
+paths:
+  /api/purchases:
+    post:
+      summary: Create a purchase
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseInput'
+      responses:
+        '201':
+          description: Purchase created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/sales:
+    post:
+      summary: Create a sale
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaleInput'
+      responses:
+        '201':
+          description: Sale created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/products:
+    post:
+      summary: Create product
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /api/stock-adjustments:
+    post:
+      summary: Create stock adjustment
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Stock adjustment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /api/stock-transfers:
+    post:
+      summary: Create stock transfer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Stock transfer created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+tags:
+  - name: purchases
+  - name: sales
+
+x-notes:
+  auth:
+    sanctum:
+      description: |
+        This application uses Laravel Sanctum for API authentication.
+        Create a personal access token in tinker or via your user model:
+        `User::first()->createToken("frontend")->plainTextToken` and send
+        `Authorization: Bearer <token>` header.
+  examples:
+    test_user:
+      email: test@example.com
+      password: password
