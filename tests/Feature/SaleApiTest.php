@@ -29,10 +29,11 @@ class SaleApiTest extends TestCase
 
     public function test_can_create_sale(): void
     {
-        $customer = Customer::first();
-        $product = Product::first();
-        $warehouse = Warehouse::where('name', 'Main Warehouse')->first() ?? Warehouse::first();
-        $tax = Tax::first();
+        $customer = Customer::first() ?? Customer::factory()->create();
+        $product = Product::first() ?? Product::factory()->create();
+        $warehouse = Warehouse::where('name', 'Main Warehouse')->first()
+            ?? Warehouse::factory()->create();
+        $tax = Tax::first() ?? Tax::factory()->create();
 
         $payload = [
             'customer_id' => $customer->id,

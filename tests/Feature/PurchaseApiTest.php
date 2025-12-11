@@ -18,6 +18,8 @@ class PurchaseApiTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected bool $seed = true;
+
     protected function setUp(): void
     {
         parent::setUp();
