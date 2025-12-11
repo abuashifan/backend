@@ -29,10 +29,11 @@ class PurchaseApiTest extends TestCase
 
     public function test_can_create_purchase(): void
     {
-        $supplier = Supplier::factory()->create();
-        $product = Product::factory()->create();
-        $warehouse = Warehouse::factory()->create();
-        $tax = Tax::factory()->create();
+        $supplier = Supplier::first() ?? Supplier::factory()->create();
+        $product = Product::first() ?? Product::factory()->create();
+        $warehouse = Warehouse::where('name', 'Main Warehouse')->first()
+            ?? Warehouse::factory()->create();
+        $tax = Tax::first() ?? Tax::factory()->create();
 
         $payload = [
             'supplier_id' => $supplier->id,
