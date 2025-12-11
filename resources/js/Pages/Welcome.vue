@@ -1,14 +1,14 @@
 <script setup>
-const props = defineProps({});
+// simple props placeholder
+defineProps({});
 </script>
 
 <template>
   <div>
-    <h1 class="text-2xl font-semibold">Hello from Inertia + Vue 3</h1>
-    <p class="mt-2 text-gray-600">This is the foundational welcome page.</p>
+    <h1>Inertia + Vue3 Loaded Successfully!</h1>
   </div>
 </template>
 
 <style scoped>
-h1 { color: #111827; }
+h1 { font-size: 1.5rem; font-weight: 600; }
 </style>

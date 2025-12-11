@@ -10,3 +10,7 @@ Route::get('/', function () {
 Route::get('/welcome', function () {
     return Inertia::render('Welcome');
 });
+
+Route::get('/inertia-test', function () {
+    return Inertia::render('Welcome');
+});
