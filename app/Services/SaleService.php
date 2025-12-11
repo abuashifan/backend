@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Tax;
 use App\Models\Warehouse;
+use App\Services\Calculators\SaleCalculator;
 use Carbon\Carbon;
 use DomainException;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +18,9 @@ use Illuminate\Support\Facades\DB;
 class SaleService
 {
     public function __construct(
-        private readonly InventoryService $inventoryService,
+        private readonly StockService $stockService,
         private readonly JournalService $journalService,
+        private readonly SaleCalculator $calculator,
     ) {
     }
 
@@ -46,10 +48,10 @@ class SaleService
             $unitPrice = (float) ($data['unit_price'] ?? 0);
             $discountAmount = (float) ($data['discount_amount'] ?? 0);
 
-            $subtotal = $quantity * $unitPrice;
-            $taxBase = $subtotal - $discountAmount;
-            $taxAmount = $tax ? ($taxBase * ((float) $tax->rate / 100)) : 0;
-            $totalAmount = $subtotal - $discountAmount + $taxAmount;
+            $computed = $this->calculator->compute($quantity, $unitPrice, $discountAmount, $tax?->id);
+            $subtotal = $computed['subtotal'];
+            $taxAmount = $computed['tax_amount'];
+            $totalAmount = $computed['total_amount'];
 
             $sale = Sale::create([
                 'customer_id' => $customer->id,
@@ -76,7 +78,7 @@ class SaleService
                 'status' => 'open',
             ]);
 
-            $this->inventoryService->decreaseStock(
+            $this->stockService->decreaseStock(
                 $product->id,
                 $warehouse->id,
                 $quantity,
