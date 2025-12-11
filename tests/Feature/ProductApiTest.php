@@ -24,9 +24,9 @@ class ProductApiTest extends TestCase
 
     public function test_can_create_product(): void
     {
-        $category = ProductCategory::factory()->create();
-        $unit = ProductUnit::factory()->create();
-        $tax = Tax::factory()->create();
+        $category = ProductCategory::first() ?? ProductCategory::factory()->create();
+        $unit = ProductUnit::first() ?? ProductUnit::factory()->create();
+        $tax = Tax::first() ?? Tax::factory()->create();
 
         $payload = [
             'sku' => 'PRD-1001',
@@ -59,7 +59,15 @@ class ProductApiTest extends TestCase
 
     public function test_can_update_and_delete_product(): void
     {
-        $product = Product::factory()->create();
+        $category = ProductCategory::first() ?? ProductCategory::factory()->create();
+        $unit = ProductUnit::first() ?? ProductUnit::factory()->create();
+        $tax = Tax::first() ?? Tax::factory()->create();
+
+        $product = Product::factory()->create([
+            'product_category_id' => $category->id,
+            'product_unit_id' => $unit->id,
+            'default_tax_id' => $tax->id,
+        ]);
 
         $updateResponse = $this->putJson("/api/products/{$product->id}", [
             'name' => 'Updated Name',
